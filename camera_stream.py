@@ -2,7 +2,7 @@ import io
 from threading import Condition
 
 from picamera2 import Picamera2
-from picamera2.encoders import JpegEncoder
+from picamera2.encoders import JpegEncoder, MJPEGEncoder, H264Encoder
 from picamera2.outputs import FileOutput
 
 
@@ -23,7 +23,8 @@ class CameraStream():
         self._picam2.configure(
             self._picam2.create_video_configuration(main={"size": (640, 480)}))
         self._output = StreamingOutput()
-        self._picam2.start_recording(JpegEncoder(), FileOutput(self._output))
+        # self._picam2.start_recording(JpegEncoder(), FileOutput(self._output))
+        self._picam2.start_recording(H264Encoder(), FileOutput(self._output))
 
     def get_frame(self):
         with self._output.condition:
